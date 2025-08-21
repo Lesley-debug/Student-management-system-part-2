@@ -4,7 +4,7 @@ class Database {
     private $db_name = "internship-task4";
     private $username = "root";
     private $password = "";
-    protected $conn;
+    public $conn;
 
     public function connect() {  // ✅ must be exactly "connect"
         $this->conn = null;
@@ -13,5 +13,6 @@ class Database {
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
+        return $this->conn;
     }
 }

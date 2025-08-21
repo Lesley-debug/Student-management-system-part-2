@@ -1,25 +1,46 @@
 <?php include "../header.php" ?>
+<?php
+require_once '../config/Database.php';
+require_once '../controllers/BatchesController.php';
 
-<div class="card">
-    <div class="card-header">Batches</div>
-    <div class="card-body">
-        <form action="" method="POST">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" class="form-control" required><br>
-            
-            <label for="course_id">Course</label><br>
-            <select name="course_id" id="course_id" class="custom-select" >
-                <option value="" selected>Select A Course</option>
-                    <option value=""></option>
-            </select><br>
-            <!-- <input type="text" name="course_id" id="course_id" class="form-control" required><br> -->            
-            
-            <label for="start_date">Start Date</label>
-            <input type="date" name="start_date" id="start_date" class="form-control" required><br>
-            
-            <button type="submit">Create</button>
-        </form>
-    </div>
-</div>
 
-<?php include "../footer.php" ?>
+    $db = (new Database())->connect();
+$controller = new BatchesController($db);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $controller->store($_POST['course_id'], $_POST['name'], $_POST['start_date'], $_POST['end_date']);
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<h2>Add Batch</h2>
+<form method="POST">
+    <label>Course:</label>
+    <select name="course_id" required>
+        <?php 
+            $stm = $db->prepare("select id, name from courses");
+            if($stm->execute()){
+                $result = $stm->get_result();
+                while ($data = $result->fetch_array()) 
+                {
+                    echo '
+                        <option value = "'.$data['id'].'"> '.$data['name'].'</option>
+                    ';
+                }
+            }
+        ?>
+       
+    </select><br><br>
+
+    <label>Batch Name:</label>
+    <input type="text" name="name" required><br><br>
+
+    <label>Start Date:</label>
+    <input type="date" name="start_date" required><br><br>
+
+    <label>End Date:</label>
+    <input type="date" name="end_date" required><br><br>
+
+    <button type="submit">Add Batch</button>
+</form>

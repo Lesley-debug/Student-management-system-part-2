@@ -1,13 +1,16 @@
 <?php
+
 require_once '../config/database.php';
 
-class Courses extends Database {
-    private $courses = "courses";
+class Batches extends Database {
+    private $Batches = 'batches';
+    //private $table = "batches";
 
     public $id;
+    public $course_id;
     public $name;
-    public $syllabus;
-    public $duration;
+    public $start_date;
+    public $end_date;
 
     public function __construct(){
         $this->connect();
@@ -15,8 +18,7 @@ class Courses extends Database {
 
     // Get all
     public function readAll() {
-
-        $sql = "SELECT * FROM `courses`";
+        $sql = "SELECT * FROM `Batches`";
         $result = mysqli_query($this->conn, $sql);
         $rows = [];
 
@@ -30,7 +32,7 @@ class Courses extends Database {
     
     // Get one
     public function readOne($id) {
-        $sql = "SELECT * FROM `courses` WHERE `id` = $id";
+        $sql = "SELECT * FROM `Batches` WHERE `id` = $id";
         $result = mysqli_query($this->conn, $sql);
         $row = [];
 
@@ -45,23 +47,26 @@ class Courses extends Database {
 
     // CREATE
     public function create() {
-        $stmt = $this->conn->prepare("INSERT INTO $this->courses (name, syllabus, duration) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $this->name, $this->syllabus, $this->duration);
+        $sql = "INSERT INTO $this->Batches (course_id, name, start_date, end_date) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("isss", $this->course_id, $this->name, $this->start_date, $this->end_date);
         return $stmt->execute();
     }
 
     // UPDATE
     public function update() {
         var_dump("okay");
-        $stmt = $this->conn->prepare("UPDATE $this->courses SET name=?, syllabus=? WHERE id=?");
-        $stmt->bind_param("ssi", $this->name, $this->syllabus, $this->id);
+        $stmt = $this->conn->prepare("UPDATE $this->Batches SET name=?, start_date=?, end_date=? WHERE id=?");
+        $stmt->bind_param("sssi", $this->name, $this->start_date, $this->end_date, $this->id);
         return $stmt->execute();
     }
 
     // DELETE
     public function delete() {
-        $stmt = $this->conn->prepare("DELETE FROM courses WHERE id=?");
+        $stmt = $this->conn->prepare("DELETE FROM Batches WHERE id=?");
         $stmt->bind_param("i", $this->id);
         return $stmt->execute();
     }
 }
+
+?>

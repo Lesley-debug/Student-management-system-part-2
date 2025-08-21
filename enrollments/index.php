@@ -1,11 +1,25 @@
 <?php include "../header.php" ?>
 
+<?php
+  require_once '../controllers/Enrollmentcontroller.php';
+
+  $Enrollment = $Enrollmentcontroller->index();
+
+  if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $Enrollmentcontroller->store($_POST['enroll_no'], $_POST['batch_id'], $_POST['student_id'], $_POST['join_date'], $_POST['fee']);
+    header("location: index.php");
+    die();
+  }
+
+  
+?>
+
 <div class="card">
   <div class="card-header">
     <h2>Enrollments</h2>
   </div>
   <div class="card-body">
-    <a href="" class="btn btn-success btn-sm" title="Add New Enrollment">
+    <a href="create.php" class="btn btn-success btn-sm" title="Add New Enrollment">
       <i class="fa fa-plus" aria-hidden="true"></i> Add New
     </a>
     <br />
@@ -15,7 +29,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Enroll no</th>
+            <th>Enroll_no</th>
             <th>Batch</th>
             <th>Student</th>
             <th>Join Date</th>
@@ -24,13 +38,14 @@
           </tr>
         </thead>
         <tbody>
+          <?php foreach ($Enrollment as $enrollment) {?>
           <tr>
-            <td>1</td>
-            <td>w</td>
-            <td>w</td>
-            <td>w</td>
-            <td>w</td>
-            <td>w</td>
+            <td><?=$enrollment['id'] ?></td>
+            <td><?=$enrollment['enroll_no'] ?></td>
+            <td><?=$enrollment['batch_id'] ?></td>
+            <td><?=$enrollment['student_id'] ?></td>
+            <td><?=$enrollment['join_date'] ?></td>
+            <td><?=$enrollment['fee'] ?></td>
             
             <td>
               <a href="" title="View Enrollment"><button class="btn btn-primary">View</button></a>
@@ -42,6 +57,7 @@
               
             </td>
           </tr>
+          <?php } ?>
           <h2></h2>
         </tbody>
       </table>
