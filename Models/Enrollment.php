@@ -29,7 +29,7 @@ class Enrollment extends Database {
         return $rows;
   }
 
-  // Get one
+  // Get oneit
     public function readOne($id) {
         $sql = "SELECT * FROM `enrollment` WHERE `id` = $id";
         $result = mysqli_query($this->conn, $sql);

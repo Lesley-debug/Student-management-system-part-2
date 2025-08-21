@@ -15,7 +15,7 @@
     if(isset($_POST['submit'])){
         $enroll_no = mysqli_real_escape_string($db, htmlspecialchars($_POST['enroll_no']));
         $batch_id = $_POST['batch_id'];
-        $student_id = $_POST['st_idudent'];
+        $student_id = $_POST['student_id'];
         $join_date = $_POST['join_date'];
         $fee = $_POST['fee'];
 
@@ -32,7 +32,7 @@
 <div class="card">
     <div class="card-header">Enrollment Page</div>
     <div class="card-body">
-        <form action="index.php" method="POST">
+        <form action="create.php" method="POST">
             <label for="enroll_no">Enroll no</label>
             <input type="text" name="enroll_no" id="enroll_no" class="form-control" required><br>
             
